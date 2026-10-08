@@ -1,0 +1,161 @@
+# Configuração Avançada de Logging para Sistema Forex ML
+# Este arquivo define configurações flexíveis para logging e debugging
+
+version: 1
+disable_existing_loggers: false
+
+# Formatadores de log
+formatters:
+  detailed:
+    format: '%(asctime)s | %(name)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s() | %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  simple:
+    format: '%(asctime)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  json:
+    format: '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "module": "%(filename)s", "line": %(lineno)d, "function": "%(funcName)s", "message": "%(message)s"}'
+    datefmt: '%Y-%m-%dT%H:%M:%S'
+  
+  performance:
+    format: '%(asctime)s | PERF | %(name)s | %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+
+# Handlers de log
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+  
+  file_debug:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: logs/debug.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf-8
+  
+  file_info:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: logs/info.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 3
+    encoding: utf-8
+  
+  file_error:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: detailed
+    filename: logs/error.log
+    maxBytes: 5242880   # 5MB
+    backupCount: 10
+    encoding: utf-8
+  
+  file_performance:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: INFO
+    formatter: performance
+    filename: logs/performance.log
+    when: midnight
+    interval: 1
+    backupCount: 30
+    encoding: utf-8
+  
+  json_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: logs/structured.json
+    maxBytes: 20971520  # 20MB
+    backupCount: 5
+    encoding: utf-8
+
+# Loggers específicos
+loggers:
+  forex_ml:
+    level: DEBUG
+    handlers: [console, file_debug, file_info, file_error]
+    propagate: false
+  
+  forex_ml.models:
+    level: DEBUG
+    handlers: [console, file_debug, json_file]
+    propagate: false
+  
+  forex_ml.data:
+    level: INFO
+    handlers: [console, file_info, json_file]
+    propagate: false
+  
+  forex_ml.evaluation:
+    level: INFO
+    handlers: [console, file_info, file_error]
+    propagate: false
+  
+  forex_ml.performance:
+    level: INFO
+    handlers: [file_performance]
+    propagate: false
+  
+  forex_ml.debug:
+    level: DEBUG
+    handlers: [console, file_debug]
+    propagate: false
+
+# Logger raiz
+root:
+  level: WARNING
+  handlers: [console, file_error]
+
+# Configurações específicas do sistema
+system:
+  log_directory: logs
+  max_log_size_mb: 100
+  retention_days: 30
+  
+  # Configurações de performance
+  performance_monitoring:
+    enabled: true
+    threshold_seconds: 1.0
+    memory_tracking: true
+  
+  # Configurações de debugging
+  debugging:
+    enabled: true
+    breakpoint_file: debug_breakpoints.json
+    variable_inspection: true
+    stack_trace_depth: 10
+  
+  # Integração com serviços externos
+  external_services:
+    elasticsearch:
+      enabled: false
+      host: localhost
+      port: 9200
+      index: forex-ml-logs
+    
+    sentry:
+      enabled: false
+      dsn: ""
+      environment: development
+    
+    webhook:
+      enabled: false
+      url: ""
+      level: ERROR
+
+# Filtros de log
+filters:
+  sensitive_data:
+    class: logging.Filter
+    # Remove dados sensíveis dos logs
+  
+  rate_limit:
+    class: logging.Filter
+    # Limita taxa de logs para evitar spam

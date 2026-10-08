@@ -1,0 +1,37 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+flask_session/
+
+# secrets
+.env
+*.security_key
+*.security_salt
+*.encrypted
+
+# runtime output: logs, databases, reports
+*.log
+*.db
+*.jsonl
+logs/
+*_report_*.json
+*_results_*.json
+*_results_*.txt
+validation_results_*
+backups/
+*_backups/
+*_backup_*
+
+# data and trained models (too large for git)
+data/
+extracted_fx_data/
+processed_fx_data*/
+trained_models*/
+optimized_models*/
+model_evaluation*/
+*.parquet
+*.pkl
+*.joblib
+*.exe

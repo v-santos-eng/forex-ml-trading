@@ -1,0 +1,96 @@
+{
+  "preferences": {
+    "dashboard_layout": "standard",
+    "panel_positions": {
+      "trading": {
+        "x": 0,
+        "y": 0,
+        "width": 400,
+        "height": 300
+      },
+      "positions": {
+        "x": 400,
+        "y": 0,
+        "width": 400,
+        "height": 300
+      },
+      "analysis": {
+        "x": 0,
+        "y": 300,
+        "width": 800,
+        "height": 300
+      }
+    },
+    "visible_panels": {
+      "trading": true,
+      "positions": true,
+      "analysis": true,
+      "notifications": true,
+      "logs": true
+    },
+    "favorite_symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "AUDUSD"
+    ],
+    "quick_actions": [
+      {
+        "name": "Close All",
+        "action": "close_all_positions"
+      },
+      {
+        "name": "Export Positions",
+        "action": "export_positions"
+      },
+      {
+        "name": "Risk Check",
+        "action": "check_risk"
+      }
+    ],
+    "keyboard_shortcuts": {
+      "Ctrl+E": "export_data",
+      "Ctrl+R": "refresh_data",
+      "Ctrl+S": "save_settings",
+      "F5": "reconnect_mt5"
+    },
+    "alert_preferences": {
+      "sound_enabled": true,
+      "popup_enabled": true,
+      "email_enabled": false,
+      "profit_threshold": 100.0,
+      "loss_threshold": -50.0,
+      "margin_warning": 80.0
+    },
+    "data_preferences": {
+      "auto_refresh": true,
+      "refresh_interval": 2,
+      "keep_history_days": 30,
+      "max_log_entries": 1000,
+      "chart_timeframe": "M15"
+    },
+    "trading_preferences": {
+      "default_symbol": "EURUSD",
+      "default_lot_size": 0.1,
+      "max_spread": 3.0,
+      "auto_sl_pips": 20,
+      "auto_tp_pips": 40,
+      "risk_per_trade": 2.0
+    },
+    "ui_customization": {
+      "show_tooltips": true,
+      "animate_updates": true,
+      "compact_mode": false,
+      "show_grid_lines": true,
+      "highlight_changes": true
+    },
+    "session_data": {
+      "last_login": null,
+      "session_count": 0,
+      "total_runtime": 0,
+      "last_backup": "2025-08-19T14:57:35.570352"
+    }
+  },
+  "saved_at": "2025-08-19T14:57:35.570416",
+  "version": "1.0"
+}

@@ -1,0 +1,37 @@
+{
+  "system": {
+    "name": "ML Trading Logging System",
+    "version": "1.0.0",
+    "environment": "development",
+    "debug_mode": true
+  },
+  "paths": {
+    "base_directory": "./production_deployment",
+    "logs_directory": "./production_deployment\\logs",
+    "reports_directory": "./production_deployment\\reports",
+    "config_directory": "./production_deployment\\config",
+    "backups_directory": "./production_deployment\\backups",
+    "temp_directory": "./production_deployment\\temp"
+  },
+  "security": {
+    "sanitize_logs": true,
+    "encrypt_sensitive_data": false,
+    "access_control_enabled": false,
+    "audit_trail_enabled": true
+  },
+  "monitoring": {
+    "health_check_interval_minutes": 15,
+    "alert_thresholds": {
+      "error_rate_percent": 5,
+      "disk_usage_percent": 85,
+      "memory_usage_percent": 80
+    },
+    "notification_channels": []
+  },
+  "integration": {
+    "web_dashboard_enabled": false,
+    "api_endpoints_enabled": false,
+    "external_exports_enabled": true,
+    "real_time_streaming": false
+  }
+}

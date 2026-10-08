@@ -1,0 +1,67 @@
+{
+  "components": {
+    "ml_pipeline": {
+      "command": "python ml_production_pipeline.py",
+      "working_directory": ".",
+      "critical": true,
+      "max_restarts": 3,
+      "restart_delay": 30,
+      "health_check": {
+        "interval": 60,
+        "command": "python -c \"import psutil; print('OK')\"",
+        "timeout": 10
+      },
+      "recovery_actions": ["restart", "failover"],
+      "dependencies": [],
+      "environment": {
+        "PYTHONPATH": "."
+      },
+      "log_file": "logs/ml_pipeline.log",
+      "pid_file": "ml_pipeline.pid",
+      "backup_command": "python -c \"print('Backup realizado')\""
+    },
+    "production_monitor": {
+      "command": "python production_monitor.py --daemon --interval 30",
+      "working_directory": "./production_deployment",
+      "critical": true,
+      "max_restarts": 5,
+      "restart_delay": 15,
+      "health_check": {
+        "interval": 120,
+        "command": "python -c \"import sqlite3; conn = sqlite3.connect('production_monitoring.db'); conn.close(); print('OK')\"",
+        "timeout": 15
+      },
+      "recovery_actions": ["restart"],
+      "dependencies": [],
+      "environment": {},
+      "log_file": "logs/production_monitor.log",
+      "pid_file": "production_monitor.pid",
+      "backup_command": "copy production_monitoring.db production_monitoring_backup.db"
+    },
+    "resource_monitor": {
+      "command": "python process_health_monitor.py --pid 8204 --duration 300 --interval 30",
+      "working_directory": "./production_deployment",
+      "critical": false,
+      "max_restarts": 2,
+      "restart_delay": 60,
+      "health_check": {
+        "interval": 180,
+        "command": "python -c \"import psutil; print('OK')\"",
+        "timeout": 10
+      },
+      "recovery_actions": ["restart"],
+      "dependencies": ["ml_pipeline"],
+      "environment": {},
+      "log_file": "logs/resource_monitor.log",
+      "pid_file": "resource_monitor.pid",
+      "backup_command": "echo 'No backup needed'"
+    }
+  },
+  "global_settings": {
+    "monitoring_interval": 30,
+    "alert_cooldown": 300,
+    "max_concurrent_recoveries": 2,
+    "notification_channels": ["log", "console"],
+    "backup_retention_days": 7
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "system": {
+    "name": "MT5 Trading System",
+    "version": "1.0.0",
+    "description": "Sistema integrado de trading automatizado para MetaTrader 5"
+  },
+  "mt5": {
+    "login": null,
+    "password": null,
+    "server": null,
+    "timeout": 60000,
+    "portable": false
+  },
+  "trading": {
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "USDCHF",
+      "AUDUSD",
+      "USDCAD",
+      "NZDUSD",
+      "EURJPY",
+      "GBPJPY",
+      "EURGBP"
+    ],
+    "timeframes": {
+      "primary": "M15",
+      "secondary": "H1",
+      "confirmation": "M5"
+    },
+    "analysis_interval": 300,
+    "enable_auto_trading": false,
+    "max_concurrent_trades": 5,
+    "min_confidence_threshold": 0.65
+  },
+  "risk_management": {
+    "risk_level": "MEDIUM",
+    "max_risk_per_trade": 0.02,
+    "max_daily_loss": 0.05,
+    "max_weekly_loss": 0.15,
+    "max_drawdown": 0.10,
+    "position_sizing": {
+      "method": "fixed_percentage",
+      "base_lot_size": 0.01,
+      "max_lot_size": 1.0,
+      "risk_per_trade": 0.02
+    },
+    "stop_loss": {
+      "method": "atr_based",
+      "atr_multiplier": 2.0,
+      "min_pips": 10,
+      "max_pips": 100
+    },
+    "take_profit": {
+      "method": "risk_reward",
+      "risk_reward_ratio": 2.0,
+      "min_pips": 15,
+      "max_pips": 200
+    },
+    "trailing_stop": {
+      "enabled": true,
+      "start_pips": 20,
+      "step_pips": 5
+    }
+  },
+  "indicators": {
+    "rsi": {
+      "period": 14,
+      "overbought": 70,
+      "oversold": 30,
+      "weight": 0.25
+    },
+    "macd": {
+      "fast_period": 12,
+      "slow_period": 26,
+      "signal_period": 9,
+      "weight": 0.30
+    },
+    "bollinger_bands": {
+      "period": 20,
+      "std_dev": 2.0,
+      "weight": 0.20
+    },
+    "moving_averages": {
+      "sma_fast": 10,
+      "sma_slow": 50,
+      "ema_fast": 12,
+      "ema_slow": 26,
+      "weight": 0.15
+    },
+    "stochastic": {
+      "k_period": 14,
+      "d_period": 3,
+      "slowing": 3,
+      "overbought": 80,
+      "oversold": 20,
+      "weight": 0.10
+    }
+  },
+  "signals": {
+    "generation": {
+      "min_indicators_agreement": 3,
+      "confirmation_required": true,
+      "filter_weak_signals": true
+    },
+    "execution": {
+      "max_slippage": 3,
+      "execution_timeout": 30,
+      "retry_attempts": 3,
+      "partial_fill_acceptable": true
+    },
+    "filters": {
+      "time_filter": {
+        "enabled": true,
+        "trading_hours": {
+          "start": "08:00",
+          "end": "17:00",
+          "timezone": "UTC"
+        },
+        "avoid_news": true,
+        "news_buffer_minutes": 30
+      },
+      "spread_filter": {
+        "enabled": true,
+        "max_spread_pips": 3.0
+      },
+      "volatility_filter": {
+        "enabled": true,
+        "min_atr": 0.0010,
+        "max_atr": 0.0200
+      }
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file_logging": true,
+    "console_logging": true,
+    "max_file_size_mb": 50,
+    "backup_count": 5,
+    "log_directory": "logs",
+    "components": {
+      "connector": "INFO",
+      "order_manager": "INFO",
+      "data_provider": "INFO",
+      "risk_manager": "INFO",
+      "signal_integrator": "INFO",
+      "forex_analyzer": "INFO",
+      "dashboard": "INFO"
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "methods": {
+      "email": {
+        "enabled": false,
+        "smtp_server": "smtp.gmail.com",
+        "smtp_port": 587,
+        "username": "",
+        "password": "",
+        "from_email": "",
+        "to_emails": []
+      },
+      "telegram": {
+        "enabled": false,
+        "bot_token": "",
+        "chat_id": ""
+      },
+      "webhook": {
+        "enabled": false,
+        "url": "",
+        "headers": {}
+      }
+    },
+    "events": {
+      "trade_opened": true,
+      "trade_closed": true,
+      "risk_alert": true,
+      "system_error": true,
+      "connection_lost": true,
+      "daily_summary": true
+    }
+  },
+  "performance": {
+    "monitoring": {
+      "enabled": true,
+      "metrics_interval": 60,
+      "save_to_file": true,
+      "file_path": "performance/metrics.json"
+    },
+    "optimization": {
+      "auto_optimize": false,
+      "optimization_interval_days": 30,
+      "min_trades_for_optimization": 100
+    }
+  },
+  "database": {
+    "enabled": false,
+    "type": "sqlite",
+    "connection_string": "sqlite:///mt5_trading.db",
+    "tables": {
+      "trades": true,
+      "signals": true,
+      "performance": true,
+      "logs": true
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "interval_hours": 24,
+    "backup_directory": "backups",
+    "max_backups": 30,
+    "compress": true
+  },
+  "security": {
+    "encrypt_config": false,
+    "api_key_encryption": false,
+    "secure_logging": true,
+    "audit_trail": true
+  }
+}

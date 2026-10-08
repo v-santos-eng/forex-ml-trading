@@ -1,0 +1,435 @@
+# Configuração do Sistema de ML em Produção para Forex
+# Este arquivo centraliza todas as configurações do pipeline automatizado
+
+# =============================================================================
+# CONFIGURAÇÕES GERAIS DO PIPELINE
+# =============================================================================
+pipeline:
+  name: "ML Forex Production Pipeline"
+  version: "1.0.0"
+  environment: "production"  # development, staging, production
+  
+  # Componentes habilitados
+  components:
+    scheduler: true
+    performance_monitor: true
+    hyperparameter_optimizer: true
+    quality_monitor: true
+    memory_system: true
+    dashboard: true
+  
+  # Configurações de monitoramento
+  monitoring:
+    interval_seconds: 30
+    health_check_interval: 300  # 5 minutos
+    alert_cooldown_minutes: 60
+    
+  # Configurações de threading
+  threading:
+    max_workers: 10
+    timeout_seconds: 300
+
+# =============================================================================
+# CONFIGURAÇÕES DE RETREINAMENTO
+# =============================================================================
+retraining:
+  # Retreinamento automático
+  auto_enabled: true
+  interval_hours: 24
+  
+  # Gatilhos de retreinamento
+  triggers:
+    performance_threshold: 0.60
+    quality_threshold: 0.65
+    volatility_threshold: 0.05
+    loss_streak_threshold: 5
+    
+  # Configurações de prioridade
+  priority_rules:
+    high_priority_pairs: ["EURUSD", "GBPUSD", "USDJPY"]
+    critical_performance_drop: 0.20  # 20% de queda
+    
+  # Configurações de backup
+  backup:
+    keep_model_versions: 5
+    backup_before_retrain: true
+
+# =============================================================================
+# CONFIGURAÇÕES DE OTIMIZAÇÃO DE HIPERPARÂMETROS
+# =============================================================================
+hyperparameter_optimization:
+  # Configurações gerais
+  enabled: true
+  optimize_on_retrain: true
+  
+  # Métodos de otimização
+  default_method: "optuna_tpe"  # optuna_tpe, optuna_cmaes, grid_search, random_search
+  
+  # Configurações por método
+  methods:
+    optuna_tpe:
+      n_trials: 100
+      timeout_seconds: 3600  # 1 hora
+      n_jobs: 4
+      
+    optuna_cmaes:
+      n_trials: 50
+      timeout_seconds: 1800  # 30 minutos
+      
+    grid_search:
+      cv_folds: 5
+      n_jobs: -1
+      
+    random_search:
+      n_iter: 50
+      cv_folds: 5
+  
+  # Configurações de modelos
+  models:
+    xgboost:
+      param_space:
+        n_estimators: [100, 500]
+        max_depth: [3, 10]
+        learning_rate: [0.01, 0.3]
+        subsample: [0.8, 1.0]
+        
+    random_forest:
+      param_space:
+        n_estimators: [100, 300]
+        max_depth: [5, 20]
+        min_samples_split: [2, 10]
+        
+    gradient_boosting:
+      param_space:
+        n_estimators: [100, 300]
+        learning_rate: [0.01, 0.2]
+        max_depth: [3, 8]
+
+# =============================================================================
+# CONFIGURAÇÕES DE MONITORAMENTO DE PERFORMANCE
+# =============================================================================
+performance_monitoring:
+  # Configurações gerais
+  enabled: true
+  check_interval_seconds: 60
+  
+  # Métricas monitoradas
+  metrics:
+    accuracy:
+      warning_threshold: 0.70
+      critical_threshold: 0.60
+      emergency_threshold: 0.50
+      
+    precision:
+      warning_threshold: 0.65
+      critical_threshold: 0.55
+      emergency_threshold: 0.45
+      
+    recall:
+      warning_threshold: 0.65
+      critical_threshold: 0.55
+      emergency_threshold: 0.45
+      
+    f1_score:
+      warning_threshold: 0.65
+      critical_threshold: 0.55
+      emergency_threshold: 0.45
+      
+    profit_factor:
+      warning_threshold: 1.20
+      critical_threshold: 1.00
+      emergency_threshold: 0.80
+      
+    sharpe_ratio:
+      warning_threshold: 1.00
+      critical_threshold: 0.50
+      emergency_threshold: 0.00
+      
+    max_drawdown:
+      warning_threshold: 0.10  # 10%
+      critical_threshold: 0.20  # 20%
+      emergency_threshold: 0.30  # 30%
+      
+    win_rate:
+      warning_threshold: 0.55
+      critical_threshold: 0.45
+      emergency_threshold: 0.35
+  
+  # Configurações de alertas
+  alerts:
+    email_enabled: false
+    slack_enabled: false
+    webhook_enabled: false
+    log_level: "WARNING"
+    
+  # Retenção de dados
+  data_retention:
+    metrics_days: 90
+    alerts_days: 30
+
+# =============================================================================
+# CONFIGURAÇÕES DE MONITORAMENTO DE QUALIDADE
+# =============================================================================
+quality_monitoring:
+  # Configurações gerais
+  enabled: true
+  check_interval_seconds: 30
+  
+  # Dashboard web
+  dashboard:
+    enabled: true
+    port: 8050
+    host: "0.0.0.0"
+    debug: false
+    
+  # Métricas de qualidade
+  quality_thresholds:
+    excellent: 0.85
+    good: 0.75
+    average: 0.65
+    poor: 0.55
+    # Abaixo de 0.55 é considerado crítico
+    
+  # Janelas de análise
+  analysis_windows:
+    short_term_minutes: 60
+    medium_term_hours: 6
+    long_term_hours: 24
+    
+  # Configurações de predição
+  prediction_tracking:
+    max_pending_hours: 24
+    confidence_threshold: 0.60
+    execution_time_threshold: 1.0  # segundos
+
+# =============================================================================
+# CONFIGURAÇÕES DO SISTEMA DE MEMÓRIA ADAPTATIVA
+# =============================================================================
+memory_system:
+  # Configurações gerais
+  enabled: true
+  
+  # Configurações de aprendizado
+  learning:
+    session_interval_hours: 12
+    retention_days: 90
+    min_predictions_for_analysis: 100
+    
+  # Configurações de análise
+  analysis:
+    pattern_detection: true
+    trend_analysis: true
+    performance_correlation: true
+    
+  # Configurações de recomendações
+  recommendations:
+    auto_retrain_suggestions: true
+    parameter_optimization_hints: true
+    risk_management_alerts: true
+
+# =============================================================================
+# CONFIGURAÇÕES DE DADOS E MODELOS
+# =============================================================================
+data:
+  # Pares de moedas
+  currency_pairs:
+    major: ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD"]
+    minor: ["EURJPY", "GBPJPY", "EURGBP", "AUDCAD", "AUDCHF", "AUDNZD"]
+    
+  # Modelos suportados
+  models:
+    primary: ["xgboost", "random_forest", "gradient_boosting"]
+    secondary: ["logistic_regression", "svm", "lightgbm"]
+    
+  # Timeframes
+  timeframes: ["1m", "5m", "15m", "1h", "4h", "1d"]
+  
+  # Indicadores técnicos
+  technical_indicators:
+    - "sma_20"
+    - "sma_50"
+    - "ema_12"
+    - "ema_26"
+    - "rsi_14"
+    - "macd"
+    - "bollinger_bands"
+    - "stochastic"
+    - "atr_14"
+    - "adx_14"
+
+# =============================================================================
+# CONFIGURAÇÕES DE LOGGING
+# =============================================================================
+logging:
+  # Configurações gerais
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  
+  # Arquivos de log
+  files:
+    main: "logs/ml_production_pipeline.log"
+    scheduler: "logs/ml_scheduler.log"
+    performance: "logs/performance_monitor.log"
+    quality: "logs/quality_monitor.log"
+    optimizer: "logs/hyperparameter_optimizer.log"
+    memory: "logs/memory_system.log"
+    
+  # Configurações de rotação
+  rotation:
+    max_size_mb: 100
+    backup_count: 5
+    
+  # Formatação
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+
+# =============================================================================
+# CONFIGURAÇÕES DE BANCO DE DADOS
+# =============================================================================
+database:
+  # Configurações SQLite
+  sqlite:
+    scheduler_db: "data/ml_scheduler.db"
+    performance_db: "data/performance_monitor.db"
+    quality_db: "data/prediction_quality.db"
+    optimizer_db: "data/hyperparameter_optimizer.db"
+    memory_db: "data/forex_memory_system.db"
+    
+  # Configurações de backup
+  backup:
+    enabled: true
+    interval_hours: 24
+    retention_days: 30
+    backup_path: "backups/"
+
+# =============================================================================
+# CONFIGURAÇÕES DE SEGURANÇA
+# =============================================================================
+security:
+  # Configurações de API
+  api:
+    rate_limit_per_minute: 1000
+    max_request_size_mb: 10
+    
+  # Configurações de acesso
+  access:
+    allowed_ips: ["127.0.0.1", "localhost"]
+    require_authentication: false
+    
+  # Configurações de dados
+  data_protection:
+    encrypt_sensitive_data: false
+    mask_api_keys_in_logs: true
+
+# =============================================================================
+# CONFIGURAÇÕES DE NOTIFICAÇÕES
+# =============================================================================
+notifications:
+  # Email
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: ""
+    password: ""
+    from_address: ""
+    to_addresses: []
+    
+  # Slack
+  slack:
+    enabled: false
+    webhook_url: ""
+    channel: "#ml-alerts"
+    
+  # Webhook genérico
+  webhook:
+    enabled: false
+    url: ""
+    headers: {}
+    
+  # Configurações de filtros
+  filters:
+    min_severity: "WARNING"
+    rate_limit_minutes: 15
+
+# =============================================================================
+# CONFIGURAÇÕES DE PERFORMANCE
+# =============================================================================
+performance:
+  # Configurações de cache
+  cache:
+    enabled: true
+    ttl_seconds: 300
+    max_size: 1000
+    
+  # Configurações de processamento
+  processing:
+    batch_size: 1000
+    max_concurrent_tasks: 5
+    timeout_seconds: 300
+    
+  # Configurações de recursos
+  resources:
+    max_memory_mb: 2048
+    max_cpu_percent: 80
+
+# =============================================================================
+# CONFIGURAÇÕES DE DESENVOLVIMENTO
+# =============================================================================
+development:
+  # Configurações de debug
+  debug:
+    enabled: false
+    verbose_logging: false
+    save_intermediate_results: false
+    
+  # Configurações de teste
+  testing:
+    mock_external_apis: false
+    use_sample_data: false
+    fast_mode: false
+    
+  # Configurações de profiling
+  profiling:
+    enabled: false
+    output_path: "profiling/"
+
+# =============================================================================
+# CONFIGURAÇÕES ESPECÍFICAS POR AMBIENTE
+# =============================================================================
+environments:
+  development:
+    pipeline:
+      monitoring:
+        interval_seconds: 60
+    logging:
+      level: "DEBUG"
+    development:
+      debug:
+        enabled: true
+        verbose_logging: true
+        
+  staging:
+    pipeline:
+      monitoring:
+        interval_seconds: 45
+    retraining:
+      interval_hours: 12
+    logging:
+      level: "INFO"
+      
+  production:
+    pipeline:
+      monitoring:
+        interval_seconds: 30
+    retraining:
+      interval_hours: 24
+    logging:
+      level: "WARNING"
+    security:
+      access:
+        require_authentication: true
+    notifications:
+      email:
+        enabled: true
+      slack:
+        enabled: true

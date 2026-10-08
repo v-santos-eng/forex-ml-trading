@@ -1,0 +1,58 @@
+comprehensive_logger:
+  analysis_types:
+    comprehensive:
+      enabled: true
+      min_confidence: 0.7
+    fundamental:
+      enabled: true
+      min_confidence: 0.4
+    risk:
+      enabled: true
+      min_confidence: 0.6
+    technical:
+      enabled: true
+      min_confidence: 0.5
+  backup_count: 10
+  enabled: true
+  log_file_prefix: comprehensive_analysis
+  max_file_size_mb: 50
+  rotate_logs: true
+detailed_logger:
+  backup_count: 15
+  decision_types:
+    balance_update:
+      enabled: true
+    no_trade:
+      enabled: true
+    trade_operation:
+      enabled: true
+  enabled: true
+  log_file_prefix: detailed_decisions
+  max_file_size_mb: 30
+  rotate_logs: true
+general:
+  async_logging: true
+  log_directory: ./logs
+  log_level: INFO
+  max_cache_size: 1000
+  report_directory: ./reports
+  timestamp_format: '%Y-%m-%d %H:%M:%S.%f'
+  timezone: UTC
+maintenance:
+  auto_cleanup: true
+  cleanup_interval_hours: 24
+  log_retention_days: 90
+  min_free_disk_gb: 5
+  report_retention_days: 180
+performance:
+  buffer_size: 100
+  compression_enabled: true
+  flush_interval_seconds: 30
+  indexing_enabled: true
+  max_threads: 4
+trading_integrator:
+  backup_count: 12
+  enabled: true
+  log_file_prefix: trading_integration
+  max_file_size_mb: 40
+  rotate_logs: true

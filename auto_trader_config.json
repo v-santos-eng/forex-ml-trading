@@ -1,0 +1,80 @@
+{
+  "max_risk_per_trade": 0.005,
+  "max_daily_trades": 15,
+  "min_confidence": 0.45,
+  "symbols": [
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "AUDUSD",
+    "USDCAD"
+  ],
+  "ollama_url": "http://localhost:11434",
+  "prediction_interval": 300,
+  "risk_reward_ratio": 2.0,
+  "max_spread_pips": 50.0,
+  "default_sl_pips": 50,
+  "default_tp_pips": 100,
+  "min_sl_pips": 20,
+  "min_tp_pips": 30,
+  "enforce_sl_tp": true,
+  "trading_hours": {
+    "start": "08:00",
+    "end": "23:00"
+  },
+  "ml_config": {
+    "max_training_samples": 5000,
+    "fast_training_mode": true
+  },
+  "advanced_risk": {
+    "enabled": true,
+    "atr_params": {
+      "period": 14,
+      "method": "wilder",
+      "multiplier_sl": 2.0,
+      "multiplier_tp": 3.0,
+      "volatility_adjustment": true,
+      "session_adjustment": true
+    },
+    "volatility_params": {
+      "lookback_period": 20,
+      "regime_detection": true,
+      "low_vol_multiplier": 0.8,
+      "high_vol_multiplier": 1.2,
+      "extreme_vol_multiplier": 1.5,
+      "regime_thresholds": {
+        "low": 0.4,
+        "normal": 1.0,
+        "high": 1.6,
+        "extreme": 2.2
+      },
+      "adjustment_factors": {
+        "low": 0.7,
+        "normal": 1.0,
+        "high": 1.3,
+        "extreme": 1.6
+      }
+    },
+    "trailing_stop_params": {
+      "enabled": true,
+      "type": "atr_based",
+      "activation_distance": 1.5,
+      "trail_distance": 1.0
+    },
+    "gap_protection": {
+      "enabled": true,
+      "max_gap_atr_multiplier": 3.0,
+      "weekend_protection": true
+    },
+    "technical_levels": {
+      "enabled": true,
+      "support_resistance_buffer": 0.0005,
+      "pivot_point_buffer": 0.0003
+    },
+    "scaled_tp": {
+      "enabled": true,
+      "levels": [1.0, 2.0, 3.0],
+      "percentages": [30, 40, 30]
+    }
+  }
+}

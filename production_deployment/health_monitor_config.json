@@ -1,0 +1,28 @@
+{
+  "thresholds": {
+    "max_cpu_percent": 80.0,
+    "max_memory_mb": 1000.0,
+    "max_handles": 1000,
+    "max_threads": 50,
+    "max_open_files": 100,
+    "handle_growth_rate_per_hour": 100,
+    "memory_growth_rate_mb_per_hour": 100.0,
+    "min_response_time_seconds": 30.0
+  },
+  "monitoring": {
+    "interval_seconds": 30,
+    "history_retention_hours": 24,
+    "alert_cooldown_minutes": 15
+  },
+  "alerts": {
+    "email_enabled": false,
+    "email_smtp_server": "smtp.gmail.com",
+    "email_smtp_port": 587,
+    "email_from": "",
+    "email_password": "",
+    "email_to": [],
+    "log_enabled": true,
+    "console_enabled": true
+  },
+  "processes_to_monitor": []
+}

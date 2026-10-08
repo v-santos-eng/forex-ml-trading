@@ -1,0 +1,312 @@
+# Configuração do Sistema de Logging Detalhado
+# Este arquivo permite personalizar o comportamento dos componentes de logging
+
+# Configurações Gerais
+general:
+  # Diretório base para armazenamento de logs
+  log_base_directory: "./logs"
+  
+  # Diretório para relatórios de sessão
+  reports_directory: "./reports"
+  
+  # Nível de log padrão (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  default_log_level: "INFO"
+  
+  # Formato de timestamp
+  timestamp_format: "%Y-%m-%d %H:%M:%S.%f"
+  
+  # Timezone para timestamps
+  timezone: "UTC"
+  
+  # Habilitar logging assíncrono para melhor performance
+  async_logging: true
+  
+  # Tamanho máximo do cache em memória (número de registros)
+  max_cache_size: 1000
+
+# Configurações do ComprehensiveAnalysisLogger
+comprehensive_logger:
+  # Habilitar o logger abrangente
+  enabled: true
+  
+  # Nome do arquivo de log (será adicionado timestamp)
+  log_filename_prefix: "comprehensive_analysis"
+  
+  # Rotação de arquivos
+  file_rotation:
+    # Tamanho máximo do arquivo em MB antes da rotação
+    max_file_size_mb: 100
+    
+    # Número máximo de arquivos de backup
+    backup_count: 10
+    
+    # Rotação por tempo (daily, weekly, monthly)
+    time_rotation: "daily"
+  
+  # Configurações específicas por tipo de análise
+  analysis_types:
+    technical:
+      enabled: true
+      min_confidence_score: 0.0
+      log_raw_data: true
+    
+    fundamental:
+      enabled: true
+      min_confidence_score: 0.0
+      log_raw_data: true
+    
+    risk:
+      enabled: true
+      min_confidence_score: 0.0
+      log_raw_data: true
+    
+    comprehensive:
+      enabled: true
+      min_confidence_score: 0.5
+      log_raw_data: true
+  
+  # Filtros de símbolos (vazio = todos os símbolos)
+  symbol_filters: []
+  
+  # Filtros de fonte de dados
+  data_source_filters: []
+
+# Configurações do DetailedDecisionLogger
+detailed_logger:
+  # Habilitar o logger detalhado
+  enabled: true
+  
+  # Nome do arquivo de log
+  log_filename_prefix: "detailed_decisions"
+  
+  # Rotação de arquivos
+  file_rotation:
+    max_file_size_mb: 50
+    backup_count: 15
+    time_rotation: "daily"
+  
+  # Configurações por tipo de decisão
+  decision_types:
+    balance_update:
+      enabled: true
+      log_account_state: true
+      min_balance_change: 0.01
+    
+    trade_operation:
+      enabled: true
+      log_market_conditions: true
+      log_trade_details: true
+      min_confidence_score: 0.0
+    
+    no_trade_decision:
+      enabled: true
+      log_market_conditions: true
+      log_reasoning: true
+    
+    market_analysis:
+      enabled: true
+      log_detailed_conditions: true
+      min_confidence_score: 0.0
+  
+  # Filtros de símbolos
+  symbol_filters: []
+
+# Configurações do TradingDecisionIntegrator
+trading_integrator:
+  # Habilitar o integrador
+  enabled: true
+  
+  # Nome do arquivo de log
+  log_filename_prefix: "trading_decisions"
+  
+  # Configurações de monitoramento
+  monitoring:
+    # Intervalo de verificação em segundos
+    check_interval_seconds: 5
+    
+    # Habilitar monitoramento de saldo
+    monitor_balance: true
+    
+    # Habilitar monitoramento de posições
+    monitor_positions: true
+    
+    # Habilitar monitoramento de ordens
+    monitor_orders: true
+    
+    # Threshold mínimo para mudanças de saldo (em unidades da moeda base)
+    balance_change_threshold: 0.01
+  
+  # Configurações de conexão MT5
+  mt5_connection:
+    # Timeout para operações MT5 em segundos
+    timeout_seconds: 30
+    
+    # Número máximo de tentativas de reconexão
+    max_reconnection_attempts: 3
+    
+    # Intervalo entre tentativas de reconexão em segundos
+    reconnection_interval_seconds: 10
+  
+  # Rotação de arquivos
+  file_rotation:
+    max_file_size_mb: 75
+    backup_count: 12
+    time_rotation: "daily"
+
+# Configurações de Performance
+performance:
+  # Tamanho do buffer para escrita em lote
+  batch_write_size: 50
+  
+  # Intervalo de flush do buffer em segundos
+  flush_interval_seconds: 30
+  
+  # Habilitar compressão de arquivos antigos
+  compress_old_files: true
+  
+  # Idade dos arquivos para compressão (em dias)
+  compression_age_days: 7
+  
+  # Habilitar indexação para consultas rápidas
+  enable_indexing: true
+  
+  # Número máximo de threads para processamento assíncrono
+  max_worker_threads: 4
+
+# Configurações de Limpeza Automática
+cleanup:
+  # Habilitar limpeza automática
+  enabled: true
+  
+  # Retenção de arquivos de log em dias
+  log_retention_days: 90
+  
+  # Retenção de relatórios em dias
+  report_retention_days: 180
+  
+  # Executar limpeza a cada X horas
+  cleanup_interval_hours: 24
+  
+  # Espaço mínimo livre em disco (GB) antes de forçar limpeza
+  min_free_space_gb: 5
+
+# Configurações de Alertas
+alerting:
+  # Habilitar sistema de alertas
+  enabled: false
+  
+  # Configurações de email (se habilitado)
+  email:
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: ""
+    password: ""
+    from_address: ""
+    to_addresses: []
+  
+  # Condições para alertas
+  alert_conditions:
+    # Alerta se taxa de erro exceder threshold
+    error_rate_threshold: 0.05
+    
+    # Alerta se espaço em disco for baixo
+    low_disk_space_gb: 2
+    
+    # Alerta se logging parar por mais de X minutos
+    logging_silence_minutes: 30
+
+# Configurações de Segurança
+security:
+  # Habilitar sanitização de dados sensíveis
+  sanitize_sensitive_data: true
+  
+  # Lista de campos a serem sanitizados
+  sensitive_fields:
+    - "password"
+    - "api_key"
+    - "secret"
+    - "token"
+    - "auth"
+  
+  # Habilitar criptografia de arquivos de log
+  encrypt_log_files: false
+  
+  # Chave de criptografia (se habilitada)
+  encryption_key: ""
+  
+  # Habilitar controle de acesso a arquivos
+  file_access_control: true
+  
+  # Permissões de arquivo (formato octal)
+  file_permissions: "0600"
+
+# Configurações de Integração
+integration:
+  # Configurações para dashboard web
+  web_dashboard:
+    enabled: true
+    host: "localhost"
+    port: 5000
+    debug_mode: false
+  
+  # Configurações para APIs externas
+  external_apis:
+    enabled: false
+    endpoints: []
+  
+  # Configurações para exportação de dados
+  data_export:
+    # Formatos suportados: json, csv, parquet, excel
+    supported_formats: ["json", "csv"]
+    
+    # Compressão para exportação
+    compression: "gzip"
+    
+    # Incluir metadados na exportação
+    include_metadata: true
+
+# Configurações de Desenvolvimento
+development:
+  # Habilitar modo debug
+  debug_mode: false
+  
+  # Habilitar logging verbose
+  verbose_logging: false
+  
+  # Habilitar profiling de performance
+  enable_profiling: false
+  
+  # Diretório para arquivos de debug
+  debug_directory: "./debug"
+  
+  # Habilitar validação de schema
+  validate_schemas: true
+
+# Configurações Específicas por Ambiente
+environments:
+  production:
+    general:
+      default_log_level: "INFO"
+      async_logging: true
+    performance:
+      batch_write_size: 100
+      max_worker_threads: 8
+    cleanup:
+      log_retention_days: 180
+  
+  development:
+    general:
+      default_log_level: "DEBUG"
+      async_logging: false
+    development:
+      debug_mode: true
+      verbose_logging: true
+    cleanup:
+      log_retention_days: 30
+  
+  testing:
+    general:
+      default_log_level: "WARNING"
+    cleanup:
+      log_retention_days: 7
+      cleanup_interval_hours: 1

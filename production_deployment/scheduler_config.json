@@ -1,0 +1,15 @@
+{
+  "retrain_interval_hours": 24,
+  "max_concurrent_tasks": 2,
+  "performance_check_interval_minutes": 30,
+  "enabled_pairs": [
+    "EURUSD",
+    "GBPUSD",
+    "USDJPY",
+    "AUDUSD",
+    "USDCAD"
+  ],
+  "auto_start": true,
+  "backup_models": true,
+  "notification_enabled": true
+}

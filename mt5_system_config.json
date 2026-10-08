@@ -1,0 +1,52 @@
+{
+  "mt5": {
+    "login": 0,
+    "password": "",
+    "server": "ActivTradesMarkets-Server",
+    "path": "",
+    "timeout": 10000,
+    "auto_connect": true
+  },
+  "risk": {
+    "max_daily_loss_percent": 2.0,
+    "max_position_size_percent": 1.0,
+    "max_positions": 5,
+    "max_correlation": 0.7,
+    "emergency_stop_loss_percent": 5.0,
+    "use_dynamic_position_sizing": true,
+    "risk_per_trade_percent": 0.5
+  },
+  "ml": {
+    "prediction_interval_seconds": 30,
+    "min_confidence_threshold": 0.6,
+    "use_ensemble_predictions": true,
+    "retrain_interval_hours": 24,
+    "max_lookback_periods": 100
+  },
+  "data_polling": {
+    "tick_interval_ms": 100,
+    "account_interval_ms": 1000,
+    "positions_interval_ms": 500,
+    "orders_interval_ms": 500,
+    "symbols_interval_ms": 5000
+  },
+  "dashboard": {
+    "auto_start": true,
+    "theme": "default",
+    "update_interval_ms": 1000,
+    "show_charts": true,
+    "chart_timeframe": "M1"
+  },
+  "logging": {
+    "log_level": "INFO",
+    "max_log_days": 30,
+    "enable_performance_monitoring": true,
+    "log_trading_events": true
+  },
+  "system": {
+    "auto_start_components": true,
+    "enable_auto_trading": true,
+    "startup_delay_seconds": 2,
+    "shutdown_timeout_seconds": 10
+  }
+}

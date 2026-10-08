@@ -1,0 +1,233 @@
+{
+  "system_config": {
+    "monitoring_interval": 30,
+    "max_concurrent_recoveries": 3,
+    "notification_channels": [
+      "file_log",
+      "console"
+    ],
+    "health_check_timeout": 10,
+    "recovery_timeout": 300
+  },
+  "components": {
+    "mt5_dashboard": {
+      "name": "mt5_dashboard",
+      "component_type": "mt5_dashboard",
+      "command": "python mt5_dashboard_simple_secure.py",
+      "working_dir": ".",
+      "strategy": "graceful_restart",
+      "max_recovery_attempts": 5,
+      "recovery_delay": 15,
+      "health_check_interval": 30,
+      "health_thresholds": {
+        "cpu_threshold": 80.0,
+        "memory_threshold": 85.0,
+        "response_time_threshold": 5.0,
+        "error_rate_threshold": 0.1
+      },
+      "dependencies": [],
+      "critical": true,
+      "auto_recovery_enabled": true,
+      "log_file": "logs/mt5_dashboard.log",
+      "pid_file": "recovery/mt5_dashboard.pid",
+      "backup_command": "cp mt5_dashboard_simple_secure.py backups/mt5_dashboard_backup_$(date +%Y%m%d_%H%M%S).py",
+      "environment_variables": {
+        "MT5_SERVER": "ActivTradesMarkets-Server",
+        "PYTHONPATH": "."
+      }
+    },
+    "ml_pipeline": {
+      "name": "ml_pipeline",
+      "component_type": "ml_pipeline",
+      "command": "python ../ml_production_pipeline.py",
+      "working_dir": ".",
+      "strategy": "delayed_restart",
+      "max_recovery_attempts": 3,
+      "recovery_delay": 60,
+      "health_check_interval": 120,
+      "health_thresholds": {
+        "cpu_threshold": 90.0,
+        "memory_threshold": 90.0,
+        "response_time_threshold": 10.0,
+        "error_rate_threshold": 0.05
+      },
+      "dependencies": [],
+      "critical": true,
+      "auto_recovery_enabled": true,
+      "log_file": "logs/ml_pipeline.log",
+      "pid_file": "recovery/ml_pipeline.pid",
+      "backup_command": "cp ../ml_production_pipeline.py backups/ml_pipeline_backup_$(date +%Y%m%d_%H%M%S).py",
+      "environment_variables": {
+        "PYTHONPATH": ".."
+      }
+    },
+    "production_monitor": {
+      "name": "production_monitor",
+      "component_type": "monitoring_service",
+      "command": "python production_monitor.py --daemon --interval 30",
+      "working_dir": ".",
+      "strategy": "immediate_restart",
+      "max_recovery_attempts": 5,
+      "recovery_delay": 10,
+      "health_check_interval": 60,
+      "health_thresholds": {
+        "cpu_threshold": 70.0,
+        "memory_threshold": 75.0,
+        "response_time_threshold": 3.0,
+        "error_rate_threshold": 0.15
+      },
+      "dependencies": [],
+      "critical": true,
+      "auto_recovery_enabled": true,
+      "log_file": "logs/production_monitor.log",
+      "pid_file": "recovery/production_monitor.pid",
+      "backup_command": "cp production_monitor.py backups/production_monitor_backup_$(date +%Y%m%d_%H%M%S).py",
+      "environment_variables": {
+        "PYTHONPATH": "."
+      }
+    },
+    "decision_logger": {
+      "name": "decision_logger",
+      "component_type": "notification_service",
+      "command": "python -c \"from decision_logging_system import DecisionLogger; import time; logger = DecisionLogger('SystemMonitor'); [time.sleep(60) for _ in iter(int, 1)]\"",
+      "working_dir": ".",
+      "strategy": "graceful_restart",
+      "max_recovery_attempts": 3,
+      "recovery_delay": 20,
+      "health_check_interval": 180,
+      "health_thresholds": {
+        "cpu_threshold": 50.0,
+        "memory_threshold": 60.0,
+        "response_time_threshold": 2.0,
+        "error_rate_threshold": 0.2
+      },
+      "dependencies": [],
+      "critical": false,
+      "auto_recovery_enabled": true,
+      "log_file": "logs/decision_logger.log",
+      "pid_file": "recovery/decision_logger.pid",
+      "backup_command": "cp decision_logging_system.py backups/decision_logger_backup_$(date +%Y%m%d_%H%M%S).py",
+      "environment_variables": {
+        "PYTHONPATH": "."
+      }
+    },
+    "mt5_auth_service": {
+      "name": "mt5_auth_service",
+      "component_type": "api_server",
+      "command": "python -c \"from mt5_secure_auth import MT5Authenticator; import time; auth = MT5Authenticator(); [time.sleep(300) for _ in iter(int, 1)]\"",
+      "working_dir": ".",
+      "strategy": "graceful_restart",
+      "max_recovery_attempts": 4,
+      "recovery_delay": 25,
+      "health_check_interval": 300,
+      "health_thresholds": {
+        "cpu_threshold": 40.0,
+        "memory_threshold": 50.0,
+        "response_time_threshold": 1.5,
+        "error_rate_threshold": 0.1
+      },
+      "dependencies": [],
+      "critical": false,
+      "auto_recovery_enabled": true,
+      "log_file": "logs/mt5_auth_service.log",
+      "pid_file": "recovery/mt5_auth_service.pid",
+      "backup_command": "cp mt5_secure_auth.py backups/mt5_auth_backup_$(date +%Y%m%d_%H%M%S).py",
+      "environment_variables": {
+        "MT5_SERVER": "ActivTradesMarkets-Server",
+        "PYTHONPATH": "."
+      }
+    }
+  },
+  "recovery_strategies": {
+    "IMMEDIATE_RESTART": {
+      "description": "Reinicialização imediata sem delay",
+      "max_attempts": 5,
+      "base_delay": 0,
+      "exponential_backoff": false
+    },
+    "DELAYED_RESTART": {
+      "description": "Reinicialização com delay configurável",
+      "max_attempts": 3,
+      "base_delay": 30,
+      "exponential_backoff": true
+    },
+    "GRACEFUL_RESTART": {
+      "description": "Reinicialização graciosa com término controlado",
+      "max_attempts": 4,
+      "base_delay": 15,
+      "exponential_backoff": false,
+      "graceful_timeout": 10
+    },
+    "FAILOVER": {
+      "description": "Failover para instância secundária",
+      "max_attempts": 2,
+      "base_delay": 5,
+      "exponential_backoff": false
+    },
+    "MAINTENANCE_MODE": {
+      "description": "Modo de manutenção - não reiniciar automaticamente",
+      "max_attempts": 0,
+      "base_delay": 0,
+      "exponential_backoff": false
+    }
+  },
+  "notification_config": {
+    "file_log": {
+      "enabled": true,
+      "log_file": "logs/recovery_notifications.log",
+      "log_level": "INFO"
+    },
+    "console": {
+      "enabled": true,
+      "log_level": "INFO"
+    },
+    "email": {
+      "enabled": false,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "username": "",
+      "password": "",
+      "recipients": []
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "",
+      "headers": {},
+      "timeout": 10
+    }
+  },
+  "health_check_config": {
+    "default_thresholds": {
+      "cpu_threshold": 80.0,
+      "memory_threshold": 85.0,
+      "disk_threshold": 90.0,
+      "response_time_threshold": 5.0,
+      "error_rate_threshold": 0.1
+    },
+    "check_intervals": {
+      "critical_components": 30,
+      "normal_components": 60,
+      "low_priority_components": 300
+    },
+    "failure_thresholds": {
+      "consecutive_failures_critical": 2,
+      "consecutive_failures_normal": 3,
+      "consecutive_failures_low": 5
+    }
+  },
+  "backup_config": {
+    "enabled": true,
+    "backup_directory": "backups",
+    "retention_days": 7,
+    "compress_backups": true,
+    "backup_before_recovery": true
+  },
+  "logging_config": {
+    "log_level": "INFO",
+    "log_directory": "logs",
+    "max_log_size_mb": 100,
+    "backup_count": 5,
+    "log_format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "date_format": "%Y-%m-%d %H:%M:%S"
+  }
+}

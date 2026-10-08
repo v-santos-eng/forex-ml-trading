@@ -1,0 +1,347 @@
+# Configuração do Dashboard MT5 Integrado
+# Copie este arquivo para 'config.yaml' e ajuste os valores conforme necessário
+
+# Configurações de Trading
+trading:
+  # Iniciar automaticamente ao abrir o dashboard
+  auto_start: true
+  
+  # Tamanho padrão do lote para operações
+  default_lot_size: 0.01
+  
+  # Número máximo de posições simultâneas
+  max_positions: 10
+  
+  # Símbolos para monitoramento automático
+  symbols:
+    - "EURUSD"
+    - "GBPUSD"
+    - "USDJPY"
+    - "AUDUSD"
+    - "USDCAD"
+  
+  # Configurações de risco
+  risk_management:
+    max_risk_per_trade: 2.0  # Percentual do saldo
+    max_daily_loss: 5.0      # Percentual do saldo
+    stop_loss_pips: 50
+    take_profit_pips: 100
+
+# Configurações de Performance
+performance:
+  # Tamanho do cache de dados (número de itens)
+  cache_size: 1000
+  
+  # Intervalo de atualização em segundos
+  update_interval: 30
+  
+  # Limite de memória em MB
+  memory_limit_mb: 500
+  
+  # Número máximo de notificações mantidas
+  max_notifications: 100
+  
+  # Otimizações automáticas
+  auto_optimization:
+    enabled: true
+    memory_threshold: 80  # Percentual
+    cpu_threshold: 70     # Percentual
+
+# Configurações de Interface
+ui:
+  # Tema padrão (dark/light)
+  theme: "dark"
+  
+  # Tamanho da janela inicial
+  window_size:
+    width: 1400
+    height: 900
+  
+  # Posição inicial da janela
+  window_position:
+    x: 100
+    y: 50
+  
+  # Configurações de gráficos
+  charts:
+    default_timeframe: "M15"
+    max_candles: 1000
+    auto_scroll: true
+  
+  # Configurações de tabelas
+  tables:
+    max_rows_display: 500
+    auto_refresh: true
+    sort_by_default: "time"
+
+# Configurações de Notificações
+notifications:
+  # Habilitar notificações
+  enabled: true
+  
+  # Tipos de notificação habilitados
+  types:
+    trade_opened: true
+    trade_closed: true
+    connection_lost: true
+    error_occurred: true
+    performance_warning: true
+  
+  # Configurações de som
+  sound:
+    enabled: true
+    volume: 0.5
+    success_sound: "sounds/success.wav"
+    error_sound: "sounds/error.wav"
+    warning_sound: "sounds/warning.wav"
+  
+  # Configurações visuais
+  visual:
+    show_popup: true
+    popup_duration: 5  # segundos
+    flash_taskbar: true
+
+# WebSocket removido - usando apenas dados diretos do MT5
+
+# Configurações de Exportação
+export:
+  # Diretório padrão para exportações
+  default_directory: "exports"
+  
+  # Formatos habilitados
+  formats:
+    pdf: true
+    csv: true
+    excel: true
+    json: true
+  
+  # Configurações de PDF
+  pdf:
+    page_size: "A4"
+    orientation: "portrait"
+    include_charts: true
+    include_logo: true
+  
+  # Configurações de CSV
+  csv:
+    delimiter: ","
+    encoding: "utf-8"
+    include_headers: true
+  
+  # Configurações de relatórios
+  reports:
+    auto_generate_daily: false
+    auto_generate_weekly: true
+    auto_generate_monthly: true
+
+# Configurações de Logging
+logging:
+  # Nível de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  
+  # Tamanho máximo do arquivo de log em MB
+  max_file_size: 10
+  
+  # Número de arquivos de backup
+  backup_count: 5
+  
+  # Formato das mensagens de log
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Diretório dos logs
+  log_directory: "logs"
+  
+  # Logs específicos
+  loggers:
+    mt5_connector:
+      level: "DEBUG"
+      file: "mt5_connector.log"
+    
+    # WebSocket removido - usando apenas dados diretos do MT5
+    
+    performance:
+      level: "WARNING"
+      file: "performance.log"
+
+# Configurações de Segurança
+security:
+  # Criptografia de dados sensíveis
+  encrypt_credentials: true
+  
+  # Timeout de sessão em minutos
+  session_timeout: 60
+  
+  # Verificação de integridade
+  integrity_check: true
+  
+  # Backup automático de configurações
+  auto_backup: true
+  
+  # Intervalo de backup em horas
+  backup_interval: 24
+
+# Configurações de Desenvolvimento
+development:
+  # Modo debug
+  debug_mode: false
+  
+  # Recarregamento automático
+  auto_reload: false
+  
+  # Profiling de performance
+  enable_profiling: false
+  
+  # Mock de dados para testes
+  mock_data: false
+  
+  # Simulação de latência de rede
+  simulate_latency: false
+  
+  # Logs verbosos
+  verbose_logging: false
+
+# Configurações de Backup
+backup:
+  # Habilitar backup automático
+  enabled: true
+  
+  # Diretório de backup
+  directory: "backups"
+  
+  # Intervalo de backup em horas
+  interval: 6
+  
+  # Número máximo de backups mantidos
+  max_backups: 10
+  
+  # Compressão de backups
+  compress: true
+  
+  # Itens para backup
+  items:
+    - "config.yaml"
+    - "user_preferences.json"
+    - "logs/*.log"
+    - "exports/*.pdf"
+
+# Configurações de Plugins
+plugins:
+  # Habilitar sistema de plugins
+  enabled: false
+  
+  # Diretório de plugins
+  directory: "plugins"
+  
+  # Carregamento automático
+  auto_load: true
+  
+  # Plugins habilitados
+  enabled_plugins:
+    - "example_plugin"
+  
+  # Configurações específicas de plugins
+  plugin_configs:
+    example_plugin:
+      setting1: "value1"
+      setting2: 42
+
+# Configurações de API
+api:
+  # Habilitar API REST
+  rest_enabled: false
+  
+  # Porta da API REST
+  rest_port: 8080
+  
+  # WebSocket removido - usando apenas dados diretos do MT5
+  
+  # Autenticação
+  authentication:
+    enabled: true
+    method: "token"  # token, basic, oauth
+    token_expiry: 3600  # segundos
+  
+  # Rate limiting
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 60
+
+# Configurações de Monitoramento
+monitoring:
+  # Habilitar monitoramento de sistema
+  enabled: true
+  
+  # Intervalo de coleta de métricas (segundos)
+  collection_interval: 60
+  
+  # Métricas a coletar
+  metrics:
+    cpu_usage: true
+    memory_usage: true
+    disk_usage: true
+    network_usage: true
+    response_time: true
+  
+  # Alertas
+  alerts:
+    cpu_threshold: 80
+    memory_threshold: 85
+    disk_threshold: 90
+    response_time_threshold: 5000  # ms
+  
+  # Retenção de dados (dias)
+  data_retention: 30
+
+# Configurações de Integração
+integrations:
+  # Telegram Bot
+  telegram:
+    enabled: false
+    bot_token: "YOUR_BOT_TOKEN"
+    chat_id: "YOUR_CHAT_ID"
+  
+  # Email
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: "your_email@gmail.com"
+    password: "your_password"
+    use_tls: true
+  
+  # Discord Webhook
+  discord:
+    enabled: false
+    webhook_url: "YOUR_WEBHOOK_URL"
+  
+  # Slack
+  slack:
+    enabled: false
+    webhook_url: "YOUR_SLACK_WEBHOOK"
+    channel: "#trading"
+
+# Configurações Avançadas
+advanced:
+  # Threading
+  threading:
+    max_workers: 4
+    thread_pool_size: 10
+  
+  # Garbage Collection
+  gc:
+    auto_collect: true
+    collection_interval: 300  # segundos
+    threshold: (700, 10, 10)
+  
+  # Otimizações específicas
+  optimizations:
+    lazy_loading: true
+    batch_updates: true
+    virtual_scrolling: true
+    data_compression: true
+  
+  # Configurações experimentais
+  experimental:
+    new_chart_engine: false
+    # WebSocket removido - usando apenas dados diretos do MT5
+    advanced_caching: false
